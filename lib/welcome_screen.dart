@@ -1,6 +1,9 @@
+import 'package:empower_her/register_screen.dart';
 import 'package:flutter/material.dart';
 
 class WelcomeScreen extends StatelessWidget {
+  const WelcomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +24,10 @@ class WelcomeScreen extends StatelessWidget {
             SizedBox(height: 20),
             Text(
               "Empower Her",
-              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white),
+              style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
             ),
             SizedBox(height: 10),
             Text(
@@ -31,7 +37,8 @@ class WelcomeScreen extends StatelessWidget {
             SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/register'); // Navigate to Register Screen
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => RegisterScreen()));
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,

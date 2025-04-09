@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TravelScreen extends StatelessWidget {
+  const TravelScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +43,10 @@ class TravelScreen extends StatelessWidget {
                       SizedBox(width: 10),
                       Text(
                         "Your location",
-                        style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500,color: Colors.black),
+                        style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black),
                       ),
                     ],
                   ),
@@ -67,10 +72,12 @@ class TravelScreen extends StatelessWidget {
               child: Column(
                 children: [
                   _buildLocationItem(Icons.home, "Home"),
-                  _buildLocationItem(Icons.location_on, "Our Lady of Snows Basilica"),
+                  _buildLocationItem(
+                      Icons.location_on, "Our Lady of Snows Basilica"),
                   _buildLocationItem(Icons.beach_access, "Hare Island"),
                   _buildLocationItem(Icons.landscape, "Manapad Beach"),
-                  _buildLocationItem(Icons.temple_hindu, "Sri Vaikuntam Temple"),
+                  _buildLocationItem(
+                      Icons.temple_hindu, "Sri Vaikuntam Temple"),
                   _buildLocationItem(Icons.fort, "Kattabomman Memorial Fort"),
                 ],
               ),
@@ -81,7 +88,10 @@ class TravelScreen extends StatelessWidget {
             // Places Nearby Section
             Text(
               "Places Nearby Your Location",
-              style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
             ),
 
             SizedBox(height: 10),
@@ -89,8 +99,14 @@ class TravelScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildSafetyCard("assets/lady-of-snows.jpg", "Our Lady of Snows Basilica", "9", "HIGHLY SAFE", Colors.green),
-                _buildSafetyCard("assets/harbour_beach.jpg", "Thoothukudi Harbour Beach", "5", "UNSAFE", Colors.red),
+                _buildSafetyCard(
+                    "assets/lady-of-snows.jpg",
+                    "Our Lady of Snows Basilica",
+                    "9",
+                    "HIGHLY SAFE",
+                    Colors.green),
+                _buildSafetyCard("assets/harbour_beach.jpg",
+                    "Thoothukudi Harbour Beach", "5", "UNSAFE", Colors.red),
               ],
             ),
           ],
@@ -105,7 +121,7 @@ class TravelScreen extends StatelessWidget {
       leading: Icon(icon, color: Colors.black),
       title: Text(
         location,
-        style: TextStyle(color:Colors.black,fontSize: 16),
+        style: TextStyle(color: Colors.black, fontSize: 16),
       ),
       onTap: () {
         // Navigate to the selected location
@@ -114,7 +130,8 @@ class TravelScreen extends StatelessWidget {
   }
 
   // Safety Cards
-  Widget _buildSafetyCard(String imagePath, String place, String score, String status, Color color) {
+  Widget _buildSafetyCard(String imagePath, String place, String score,
+      String status, Color color) {
     return Container(
       width: 150,
       padding: EdgeInsets.all(8),
@@ -127,7 +144,11 @@ class TravelScreen extends StatelessWidget {
         children: [
           Image.asset(imagePath, height: 80, fit: BoxFit.cover),
           SizedBox(height: 5),
-          Text(place, style: TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold)),
+          Text(place,
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold)),
           SizedBox(height: 3),
           Text(
             "SAFETY SCORE: $score",
@@ -135,7 +156,8 @@ class TravelScreen extends StatelessWidget {
           ),
           Text(
             status,
-            style: TextStyle(color: color, fontSize: 12, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: color, fontSize: 12, fontWeight: FontWeight.bold),
           ),
         ],
       ),

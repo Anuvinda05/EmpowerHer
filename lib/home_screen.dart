@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'login_screen.dart';
 import 'travel_screen.dart';
 import 'police_screen.dart';
@@ -7,6 +6,8 @@ import 'trusted_contacts_screen.dart';
 
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
