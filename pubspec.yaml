@@ -1,0 +1,66 @@
+name: empower_her
+description: "A safety and empowerment app for women."
+
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  url_launcher: ^6.2.1
+
+  # UI Packages
+  google_fonts: ^6.2.1
+
+  # Firebase and Authentication
+  firebase_core: ^3.12.1
+  firebase_auth: 5.5.1
+  cloud_firestore: ^5.6.5
+  google_sign_in: ^6.1.0
+  flutter_facebook_auth: ^7.1.1
+
+  # State Management & Utilities
+  provider: 6.1.4
+
+  # Image & Icons
+  flutter_svg: ^2.0.9
+  cached_network_image: ^3.3.0
+
+  # Navigation & Animations
+  auto_route: ^10.0.1
+  animations: ^2.0.7
+
+  # Local Storage
+  shared_preferences: ^2.2.2
+
+  # Device Permissions & Services
+  permission_handler: ^11.0.1
+  sign_in_with_apple: ^6.1.4
+  location: ^5.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/thuthukudi_beach.png  # Welcome screen background
+    - assets/kattabomman-memorial-fort-panchalankurichi-1677248123_ef648fa46858ffd478d6.webp    # Register screen background
+    - assets/google.png   # Google login button
+    - assets/facebook.png # Facebook login button
+    - assets/apple.png    # Apple login button
+    - assets/temple.webp #Login screen
+    - assets/homemap.jpg #Home screen
+    - assets/harbour_beach.jpg #Travel Screen
+    - assets/lady-of-snows.jpg
+    - assets/police logo.png #Police Logo
+
+
