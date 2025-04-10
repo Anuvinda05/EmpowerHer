@@ -24,6 +24,27 @@ class _MapsPageState extends State<MapsPage> {
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _searchFocusNode = FocusNode();
   String apiKey = dotenv.env['MAPS_API_KEY'] ?? 'No API Key';
+  bool _permissionGranted = false;
+
+  final List<LatLng> safeRoute = [
+    LatLng(12.9091, 80.2279),
+    LatLng(12.9100, 80.2300),
+    LatLng(12.9115, 80.2320),
+  ];
+
+  final List<LatLng> moderateRoute = [
+    LatLng(12.9091, 80.2279),
+    LatLng(12.9080, 80.2290),
+    LatLng(12.9075, 80.2310),
+  ];
+
+  final List<LatLng> riskyRoute = [
+    LatLng(12.9091, 80.2279),
+    LatLng(12.9065, 80.2280),
+    LatLng(12.9050, 80.2300),
+  ];
+
+  final Set<Polyline> _polylines = {};
 
   @override
   void initState() {
@@ -46,6 +67,9 @@ class _MapsPageState extends State<MapsPage> {
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
     mapController.setMapStyle(_mapStyle);
+    setState(() {
+      _setPolylines();
+    });
   }
 
   // Method to get the user's location
@@ -63,6 +87,10 @@ class _MapsPageState extends State<MapsPage> {
         return;
       }
     }
+
+    setState(() {
+      _permissionGranted = true;
+    });
 
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
@@ -95,20 +123,40 @@ class _MapsPageState extends State<MapsPage> {
                     TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(right: 220.0),
-              child: TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text(
-                  "DENY",
-                  style: TextStyle(color: Colors.red),
-                ),
+            TextButton(
+              onPressed: () {},
+              child: Text(
+                "DENY",
+                style: TextStyle(color: Colors.red),
               ),
             ),
           ],
         ),
       );
     });
+  }
+
+  void _setPolylines() {
+    _polylines.addAll([
+      Polyline(
+        polylineId: PolylineId("safe"),
+        points: safeRoute,
+        color: Colors.green,
+        width: 5,
+      ),
+      Polyline(
+        polylineId: PolylineId("moderate"),
+        points: moderateRoute,
+        color: Colors.yellow,
+        width: 5,
+      ),
+      Polyline(
+        polylineId: PolylineId("risky"),
+        points: riskyRoute,
+        color: Colors.red,
+        width: 5,
+      ),
+    ]);
   }
 
   Future<void> _updateLocationDetails(double latitude, double longitude) async {
@@ -182,138 +230,144 @@ class _MapsPageState extends State<MapsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Expanded(
-            flex: 4,
-            child: Stack(
+      body: _permissionGranted
+          ? Column(
               children: [
-                GoogleMap(
-                  onMapCreated: _onMapCreated,
-                  initialCameraPosition: CameraPosition(
-                    target: _selectedLocation,
-                    zoom: 16.0,
-                  ),
-                  markers: {
-                    Marker(
-                      markerId: const MarkerId("deliveryLocation"),
-                      position: _selectedLocation,
-                      draggable: true,
-                      onDragEnd: (LatLng newPosition) {
-                        _updateLocationDetails(
-                            newPosition.latitude, newPosition.longitude);
-                      },
-                      icon: _customMarkerIcon ??
-                          BitmapDescriptor.defaultMarkerWithHue(
-                              BitmapDescriptor.hueRed),
-                    ),
-                  },
-                  onTap: (LatLng latLng) {
-                    _updateLocationDetails(latLng.latitude, latLng.longitude);
-                  },
-                  zoomControlsEnabled: false,
-                ),
-                // Floating Search Bar
-                Positioned(
-                  top: 20,
-                  left: 15,
-                  right: 15,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 10,
-                          offset: const Offset(0, 5),
+                Expanded(
+                  flex: 4,
+                  child: Stack(
+                    children: [
+                      GoogleMap(
+                        onMapCreated: _onMapCreated,
+                        initialCameraPosition: CameraPosition(
+                          target: _selectedLocation,
+                          zoom: 16.0,
                         ),
-                      ],
-                    ),
-                    child: GooglePlaceAutoCompleteTextField(
-                      textEditingController: _searchController,
-                      googleAPIKey: apiKey, // Replace with your API Key
-                      inputDecoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Search location...",
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                        hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 14,
+                        markers: {
+                          Marker(
+                            markerId: const MarkerId("deliveryLocation"),
+                            position: _selectedLocation,
+                            draggable: true,
+                            onDragEnd: (LatLng newPosition) {
+                              _updateLocationDetails(
+                                  newPosition.latitude, newPosition.longitude);
+                            },
+                            icon: _customMarkerIcon ??
+                                BitmapDescriptor.defaultMarkerWithHue(
+                                    BitmapDescriptor.hueRed),
+                          ),
+                        },
+                        polylines: _polylines,
+                        onTap: (LatLng latLng) {
+                          _updateLocationDetails(
+                              latLng.latitude, latLng.longitude);
+                        },
+                        zoomControlsEnabled: false,
+                      ),
+                      // Floating Search Bar
+                      Positioned(
+                        top: 20,
+                        left: 15,
+                        right: 15,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10.0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 10,
+                                offset: const Offset(0, 5),
+                              ),
+                            ],
+                          ),
+                          child: GooglePlaceAutoCompleteTextField(
+                            textEditingController: _searchController,
+                            googleAPIKey: apiKey, // Replace with your API Key
+                            inputDecoration: const InputDecoration(
+                              border: InputBorder.none,
+                              hintText: "Search location...",
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 15),
+                              hintStyle: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 14,
+                              ),
+                            ),
+                            debounceTime:
+                                500, // Delay in milliseconds before API request
+                            isLatLngRequired: true, // Get Latitude & Longitude
+                            getPlaceDetailWithLatLng: (prediction) async {
+                              double lat = double.parse(prediction.lat!);
+                              double lng = double.parse(prediction.lng!);
+                              _updateLocationDetails(lat, lng);
+                            },
+                            itemClick: (prediction) {
+                              _searchController.text = prediction.description!;
+                            },
+                            boxDecoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 5),
+                                ),
+                              ],
+                            ),
+                            focusNode: _searchFocusNode,
+                          ),
                         ),
                       ),
-                      debounceTime:
-                          500, // Delay in milliseconds before API request
-                      isLatLngRequired: true, // Get Latitude & Longitude
-                      getPlaceDetailWithLatLng: (prediction) async {
-                        double lat = double.parse(prediction.lat!);
-                        double lng = double.parse(prediction.lng!);
-                        _updateLocationDetails(lat, lng);
-                      },
-                      itemClick: (prediction) {
-                        _searchController.text = prediction.description!;
-                      },
-                      boxDecoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 10,
-                            offset: const Offset(0, 5),
-                          ),
-                        ],
-                      ),
-                      focusNode: _searchFocusNode,
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 50,
-                  left: MediaQuery.of(context).size.width / 2 - 65,
-                  child: GestureDetector(
-                    onTap: _locateMe,
-                    child: Container(
-                      height: 50,
-                      width: 130,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 10,
-                            offset: const Offset(0, 5),
-                          ),
-                        ],
-                      ),
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.my_location, color: Colors.green),
-                          SizedBox(width: 5),
-                          Text(
-                            "LOCATE ME",
-                            style: TextStyle(
-                              color: Colors.green,
-                              fontWeight: FontWeight.normal,
-                              fontFamily: 'Poppins',
-                              fontSize: 12,
+                      Positioned(
+                        bottom: 50,
+                        left: MediaQuery.of(context).size.width / 2 - 65,
+                        child: GestureDetector(
+                          onTap: _locateMe,
+                          child: Container(
+                            height: 50,
+                            width: 130,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10.0),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 5),
+                                ),
+                              ],
+                            ),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.my_location, color: Colors.green),
+                                SizedBox(width: 5),
+                                Text(
+                                  "LOCATE ME",
+                                  style: TextStyle(
+                                    color: Colors.green,
+                                    fontWeight: FontWeight.normal,
+                                    fontFamily: 'Poppins',
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
+                _buildBottomBar(_locationName, _locationAddress),
               ],
+            )
+          : const Center(
+              child: CircularProgressIndicator(),
             ),
-          ),
-          _buildBottomBar(_locationName, _locationAddress),
-        ],
-      ),
     );
   }
 
