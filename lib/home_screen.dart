@@ -1,9 +1,9 @@
+import 'package:empower_her/map_page.dart';
 import 'package:flutter/material.dart';
 import 'login_screen.dart';
 import 'travel_screen.dart';
 import 'police_screen.dart';
 import 'trusted_contacts_screen.dart';
-
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,14 +13,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0; // Current selected tab index
+  int _selectedIndex = 0;
 
-  // List of destinations
   final List<Widget?> _pages = [
-    null, // Home (Already on HomeScreen)
+    null, // Home
     TravelScreen(),
-    PoliceScreen(), // Police
-    TrustedContactsScreen(),// Contacts
+    PoliceScreen(),
+    TrustedContactsScreen(),
     null, // Emergency
   ];
 
@@ -53,79 +52,40 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           },
         ),
-        title: Text(
+        title: const Text(
           "Home",
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
         centerTitle: true,
       ),
-      body: Stack(
-        children: [
-          // Map Image
-          Positioned.fill(
-            child: Image.asset(
-              "assets/homemap.jpg",
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Center(
-                  child: Text(
-                    "Image not found",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                );
-              },
-            ),
+      body: MapsPage(),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.black,
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.white,
+        onTap: _onItemTapped,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "Home",
           ),
-
-          // Bottom Navigation Bar
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _buildNavItem(Icons.home, "Home", 0),
-                  _buildNavItem(Icons.directions_car, "Travel", 1),
-                  _buildNavItem(Icons.local_police, "Police", 2),
-                  _buildNavItem(Icons.contacts, "Contacts", 3),
-                  _buildNavItem(Icons.warning, "Emergency", 4),
-                ],
-              ),
-            ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.directions_car),
+            label: "Travel",
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNavItem(IconData icon, String label, int index) {
-    bool isSelected = _selectedIndex == index;
-
-    return GestureDetector(
-      onTap: () => _onItemTapped(index),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            icon,
-            color: isSelected ? Colors.blue : Colors.white, // Highlight selected icon
-            size: isSelected ? 35 : 30, // Increase size if selected
+          BottomNavigationBarItem(
+            icon: Icon(Icons.local_police),
+            label: "Police",
           ),
-          SizedBox(height: 5),
-          Text(
-            label,
-            style: TextStyle(
-              color: isSelected ? Colors.blue : Colors.white, // Highlight text
-              fontSize: isSelected ? 14 : 12, // Slightly increase font size if selected
-              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-            ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.contacts),
+            label: "Contacts",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.warning),
+            label: "Emergency",
           ),
         ],
       ),
