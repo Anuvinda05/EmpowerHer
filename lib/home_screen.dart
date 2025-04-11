@@ -4,7 +4,7 @@ import 'login_screen.dart';
 import 'travel_screen.dart';
 import 'police_screen.dart';
 import 'trusted_contacts_screen.dart';
-
+import 'emergency_screen.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
     TravelScreen(),
     PoliceScreen(),
     TrustedContactsScreen(),
-    null, // Emergency
+    EmergencyScreen(), // Emergency
   ];
 
   void _onItemTapped(int index) async {
@@ -29,8 +29,9 @@ class _HomeScreenState extends State<HomeScreen> {
         context,
         MaterialPageRoute(builder: (context) => _pages[index]!),
       );
+      // Reset to Home tab after returning
       setState(() {
-        _selectedIndex = 0; // Reset to Home after coming back
+        _selectedIndex = 0;
       });
     } else {
       setState(() {

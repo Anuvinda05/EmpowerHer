@@ -9,7 +9,7 @@ void main() async {
   await dotenv.load(fileName: ".env");
 
   await SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
   runApp(EmpowerHerApp());
 }

@@ -36,7 +36,7 @@ android {
     defaultConfig {
         applicationId = "com.example.hack"
         minSdk = 23
-        targetSdk = flutter.targetSdkVersion
+        targetSdk = 33
         versionCode = flutter.versionCode
         versionName = flutter.versionName
 
