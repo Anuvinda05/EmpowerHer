@@ -15,6 +15,8 @@ void main() async {
 }
 
 class EmpowerHerApp extends StatelessWidget {
+  const EmpowerHerApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
