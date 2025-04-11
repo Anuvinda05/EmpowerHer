@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
 class PoliceScreen extends StatelessWidget {
   final List<Map<String, String>> policeStations = [
     {
       "name": "Tuticorin Central Police Station",
-      "address": "R858+C46, West Great Cotton Road, Thoothukudi, Tamil Nadu 628001",
+      "address":
+          "R858+C46, West Great Cotton Road, Thoothukudi, Tamil Nadu 628001",
       "phone": "0461 232 1600",
       "time": "8 mins",
       "image": "assets/map1.jpg",
@@ -22,26 +22,30 @@ class PoliceScreen extends StatelessWidget {
     },
     {
       "name": "South Police Station",
-      "address": "R24F+PW4, National Highway 7A, Subhaiah Puram, Thoothukudi, Tamil Nadu 628002",
+      "address":
+          "R24F+PW4, National Highway 7A, Subhaiah Puram, Thoothukudi, Tamil Nadu 628002",
       "phone": "0461 232 1850",
       "time": "12 mins",
       "image": "assets/map3.jpg",
-      "mapLink":"https://maps.app.goo.gl/PXchWfzqMwXpt6mC6"
+      "mapLink": "https://maps.app.goo.gl/PXchWfzqMwXpt6mC6"
     },
   ];
-void _launchURL(String url) async {
-  if (await canLaunchUrl(Uri.parse(url))) {
-    await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
-  } else {
-    throw 'Could not launch $url';
+
+  void _launchURL(String url) async {
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
-}
+
   void _showCallPopup(BuildContext context, String stationName) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -62,40 +66,8 @@ void _launchURL(String url) async {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text("Ok", style: TextStyle(color: Colors.white)),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-  void _showAlertPopup(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                "Alert Sent!!",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 10),
-              Icon(Icons.verified, color: Colors.green, size: 40), // Success Icon
-              SizedBox(height: 10),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)),
                 ),
                 onPressed: () {
                   Navigator.pop(context);
@@ -109,6 +81,42 @@ void _launchURL(String url) async {
     );
   }
 
+  void _showAlertPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "Alert Sent!!",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 10),
+              Icon(Icons.verified,
+                  color: Colors.green, size: 40), // Success Icon
+              SizedBox(height: 10),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text("Ok", style: TextStyle(color: Colors.white)),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,11 +129,15 @@ void _launchURL(String url) async {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset("assets/police logo.png", height: 40), // Police Logo Image
+            Image.asset("assets/police logo.png",
+                height: 40), // Police Logo Image
             SizedBox(width: 10),
             Text(
               "Police Stations",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+              style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
             ),
           ],
         ),
@@ -142,7 +154,7 @@ void _launchURL(String url) async {
     );
   }
 
-  Widget _buildPoliceCard(BuildContext context,Map<String, String> station) {
+  Widget _buildPoliceCard(BuildContext context, Map<String, String> station) {
     return Card(
       margin: EdgeInsets.symmetric(vertical: 10),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -158,11 +170,13 @@ void _launchURL(String url) async {
             SizedBox(height: 5),
             Text(station["address"]!, style: TextStyle(fontSize: 14)),
             SizedBox(height: 5),
-            Text("Timings: OPEN 24/7", style: TextStyle(fontWeight: FontWeight.bold)),
+            Text("Timings: OPEN 24/7",
+                style: TextStyle(fontWeight: FontWeight.bold)),
             SizedBox(height: 5),
             Row(
               children: [
-                Text("Phone number: ", style: TextStyle(fontWeight: FontWeight.bold)),
+                Text("Phone number: ",
+                    style: TextStyle(fontWeight: FontWeight.bold)),
                 Text(station["phone"]!)
               ],
             ),
@@ -192,7 +206,8 @@ void _launchURL(String url) async {
                     },
                     icon: Icon(Icons.call, color: Colors.white),
                     label: Text("Call"),
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: Colors.green),
                   ),
                 ),
                 SizedBox(width: 10),
@@ -203,7 +218,8 @@ void _launchURL(String url) async {
                     },
                     icon: Icon(Icons.warning, color: Colors.white),
                     label: Text("Send Alert/SOS"),
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: Colors.red),
                   ),
                 ),
               ],
