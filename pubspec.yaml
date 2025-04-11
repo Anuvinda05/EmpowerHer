@@ -38,9 +38,19 @@ dependencies:
   shared_preferences: ^2.2.2
 
   # Device Permissions & Services
-  permission_handler: ^11.0.1
+  permission_handler: ^12.0.0
   sign_in_with_apple: ^6.1.4
+
+  # Google Maps
   location: ^5.0.0
+  geocoding: ^3.0.0
+  geolocator: ^13.0.4
+  google_maps_flutter: ^2.12.1
+  google_places_flutter: ^2.1.0
+
+  # env files
+  flutter_dotenv: ^5.2.1
+  http: ^1.3.0
 
 dev_dependencies:
   flutter_test:
@@ -52,15 +62,15 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/thuthukudi_beach.png  # Welcome screen background
-    - assets/kattabomman-memorial-fort-panchalankurichi-1677248123_ef648fa46858ffd478d6.webp    # Register screen background
-    - assets/google.png   # Google login button
+    - .env
+    - assets/thuthukudi_beach.png # Welcome screen background
+    - assets/kattabomman-memorial-fort-panchalankurichi-1677248123_ef648fa46858ffd478d6.webp # Register screen background
+    - assets/google.png # Google login button
     - assets/facebook.png # Facebook login button
-    - assets/apple.png    # Apple login button
+    - assets/apple.png # Apple login button
     - assets/temple.webp #Login screen
     - assets/homemap.jpg #Home screen
     - assets/harbour_beach.jpg #Travel Screen
     - assets/lady-of-snows.jpg
     - assets/police logo.png #Police Logo
-
-
+    - assets/map_style.json

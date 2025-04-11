@@ -1,7 +1,9 @@
+import 'package:empower_her/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,7 +110,8 @@ class LoginScreen extends StatelessWidget {
                 ),
                 onPressed: () {
                   // Navigate to Home Screen
-                  Navigator.pushNamed(context, '/home');
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => HomeScreen()));
                 },
                 child: Text(
                   "Login",
@@ -169,6 +172,7 @@ class LoginScreen extends StatelessWidget {
       ),
     );
   }
+
   // Social Login Button Widget
   Widget _buildSocialButton(String imagePath) {
     return GestureDetector(
@@ -179,4 +183,3 @@ class LoginScreen extends StatelessWidget {
     );
   }
 }
-
