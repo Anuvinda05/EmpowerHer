@@ -23,16 +23,19 @@ class _HomeScreenState extends State<HomeScreen> {
     null, // Emergency
   ];
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-
+  void _onItemTapped(int index) async {
     if (_pages[index] != null) {
-      Navigator.push(
+      await Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => _pages[index]!),
       );
+      setState(() {
+        _selectedIndex = 0; // Reset to Home after coming back
+      });
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
     }
   }
 
