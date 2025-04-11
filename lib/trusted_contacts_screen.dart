@@ -61,6 +61,21 @@ class _TrustedContactsScreenState extends State<TrustedContactsScreen> {
     );
   }
 
+  void _sendRealSMS(String phone, String message) async {
+    final Uri smsUri = Uri(
+      scheme: 'sms',
+      path: phone,
+      queryParameters: {'body': message},
+    );
+    if (await canLaunchUrl(smsUri)) {
+      await launchUrl(smsUri);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Could not launch SMS app')),
+      );
+    }
+  }
+
   void _showCallPopup(
       BuildContext context, String name, String phoneNumber) async {
     showDialog(
@@ -244,32 +259,18 @@ class _TrustedContactsScreenState extends State<TrustedContactsScreen> {
                           runSpacing: 5,
                           children: [
                             TextButton(
-                              onPressed: () => _showMessagePopup(
-                                  context,
-                                  name,
-                                  "I'm on my way",
-                                  Icon(Icons.directions_run,
-                                      size: 40, color: Colors.lightBlue)),
+                              onPressed: () =>
+                                  _sendRealSMS(phone, "I'm on my way "),
                               child: Text("I'm on my way",
                                   style: TextStyle(color: Colors.white)),
                             ),
                             TextButton(
-                              onPressed: () => _showMessagePopup(
-                                  context,
-                                  name,
-                                  "I'm safe",
-                                  Icon(Icons.check_circle,
-                                      size: 40, color: Colors.green)),
+                              onPressed: () => _sendRealSMS(phone, "I'm safe"),
                               child: Text("I'm safe",
                                   style: TextStyle(color: Colors.white)),
                             ),
                             TextButton(
-                              onPressed: () => _showMessagePopup(
-                                  context,
-                                  name,
-                                  "Help me",
-                                  Icon(Icons.warning_amber_rounded,
-                                      size: 40, color: Colors.red)),
+                              onPressed: () => _sendRealSMS(phone, "Help me"),
                               child: Text("Help me",
                                   style: TextStyle(color: Colors.redAccent)),
                             ),
@@ -300,12 +301,7 @@ class _TrustedContactsScreenState extends State<TrustedContactsScreen> {
                                 onPressed: () {
                                   final message = messageController.text.trim();
                                   if (message.isNotEmpty) {
-                                    _showMessagePopup(
-                                        context,
-                                        name,
-                                        message,
-                                        Icon(Icons.message,
-                                            size: 40, color: Colors.lightBlue));
+                                    _sendRealSMS(phone, message);
                                     messageController.clear();
                                   }
                                 },
@@ -327,12 +323,20 @@ class _TrustedContactsScreenState extends State<TrustedContactsScreen> {
                                   backgroundColor: Colors.green),
                             ),
                             ElevatedButton.icon(
-                              onPressed: () => _showMessagePopup(
-                                  context,
-                                  name,
-                                  "Emergency alert sent!",
-                                  Icon(Icons.warning,
-                                      size: 40, color: Colors.redAccent)),
+                              onPressed: () async {
+                                loc.Location location = loc.Location();
+                                var currentLocation =
+                                    await location.getLocation();
+                                final latitude = currentLocation.latitude;
+                                final longitude = currentLocation.longitude;
+
+                                final locationLink =
+                                    "https://maps.google.com/?q=$latitude,$longitude";
+                                final sosMessage =
+                                    "🚨 Emergency! I need help. My location: $locationLink";
+
+                                _sendRealSMS(phone, sosMessage);
+                              },
                               icon: Icon(Icons.warning, color: Colors.white),
                               label: Text("Send Alert/SOS"),
                               style: ElevatedButton.styleFrom(
@@ -341,9 +345,9 @@ class _TrustedContactsScreenState extends State<TrustedContactsScreen> {
                             ElevatedButton(
                               onPressed: () =>
                                   _shareLiveLocation(context, name),
-                              child: Text("Share location"),
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.blue),
+                              child: Text("Share location"),
                             ),
                           ],
                         ),
