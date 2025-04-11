@@ -4,6 +4,7 @@ import 'login_screen.dart';
 import 'travel_screen.dart';
 import 'police_screen.dart';
 import 'trusted_contacts_screen.dart';
+import 'emergency_screen.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -18,21 +19,25 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget?> _pages = [
     null, // Home (Already on HomeScreen)
     TravelScreen(),
-    PoliceScreen(), // Police
-    TrustedContactsScreen(),// Contacts
-    null, // Emergency
+    PoliceScreen(),
+    TrustedContactsScreen(),
+    EmergencyScreen(), // Emergency
   ];
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-
+  void _onItemTapped(int index) async {
     if (_pages[index] != null) {
-      Navigator.push(
+      await Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => _pages[index]!),
       );
+      // Reset to Home tab after returning
+      setState(() {
+        _selectedIndex = 0;
+      });
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
     }
   }
 
@@ -114,15 +119,15 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Icon(
             icon,
-            color: isSelected ? Colors.blue : Colors.white, // Highlight selected icon
-            size: isSelected ? 35 : 30, // Increase size if selected
+            color: isSelected ? Colors.blue : Colors.white,
+            size: isSelected ? 35 : 30,
           ),
           SizedBox(height: 5),
           Text(
             label,
             style: TextStyle(
-              color: isSelected ? Colors.blue : Colors.white, // Highlight text
-              fontSize: isSelected ? 14 : 12, // Slightly increase font size if selected
+              color: isSelected ? Colors.blue : Colors.white,
+              fontSize: isSelected ? 14 : 12,
               fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
             ),
           ),

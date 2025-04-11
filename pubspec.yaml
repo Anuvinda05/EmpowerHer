@@ -11,7 +11,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  url_launcher: ^6.2.1
+  url_launcher: ^6.2.5
+  audioplayers: ^5.2.1
+
 
   # UI Packages
   google_fonts: ^6.2.1
@@ -38,9 +40,15 @@ dependencies:
   shared_preferences: ^2.2.2
 
   # Device Permissions & Services
-  permission_handler: ^11.0.1
+  permission_handler: ^11.3.1
   sign_in_with_apple: ^6.1.4
-  location: ^5.0.0
+  location: ^5.0.3
+  flutter_contacts: ^1.1.6
+
+
+
+
+
 
 dev_dependencies:
   flutter_test:
@@ -61,6 +69,11 @@ flutter:
     - assets/homemap.jpg #Home screen
     - assets/harbour_beach.jpg #Travel Screen
     - assets/lady-of-snows.jpg
-    - assets/police logo.png #Police Logo
+    - assets/police logo.png
+    - assets/emergency.png #Police Logo
+    - assets/siren.mp3
+
+
+
 
 
